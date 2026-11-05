@@ -1,0 +1,16 @@
+{
+  "name": "iteriq",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Feedback-driven AI coding practice (in development)",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js",
+    "test": "node scripts/smoke-test.js",
+    "test:integration": "node scripts/integration-test.js",
+    "test:live": "node scripts/live-check.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

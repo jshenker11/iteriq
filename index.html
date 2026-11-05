@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iteriq</title>
+    <link rel="stylesheet" href="styles.css?v=20260512-sidebar-collapse">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-topbar">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
+          <span class="theme-icon" aria-hidden="true">D</span>
+          <span id="theme-label">Dark mode</span>
+        </button>
+      </div>
+
+      <section class="hero-panel" aria-labelledby="app-title">
+        <div class="iteriq-header-copy">
+          <p class="eyebrow">Feedback-driven coding practice</p>
+          <p class="product-name" id="app-title">Iteriq</p>
+          <h1>Learn by fixing your own code.</h1>
+          <p class="hero-text">Write a real attempt, get targeted feedback, revise your solution, and understand why it works.</p>
+          <p class="header-loop">Attempt → Feedback → Fix → Understand</p>
+        </div>
+        <aside class="live-session-card" aria-label="Live session preview">
+          <div class="live-session-header">
+            <span>Live session preview</span>
+            <strong>Python dictionaries</strong>
+          </div>
+          <div class="session-flow-list">
+            <section class="session-flow-item">
+              <span>Attempt</span>
+              <pre>scores = {"a": 2, "b": 4}
+total = sum(scores)</pre>
+            </section>
+            <section class="session-flow-item feedback">
+              <span>Feedback</span>
+              <p><strong>What worked:</strong> Dictionary shape is right.</p>
+              <p><strong>Fix:</strong> Sum the values, not the keys.</p>
+            </section>
+            <section class="session-flow-item fixed">
+              <span>Fix</span>
+              <pre>total = sum(scores.values())</pre>
+            </section>
+            <section class="session-flow-item result">
+              <span>Result</span>
+              <p>Next: apply the same pattern to a new dataset.</p>
+            </section>
+          </div>
+        </aside>
+      </section>
+
+      <section class="planner" aria-label="Learning plan builder">
+        <form class="controls" id="planner-form">
+          <div class="sidebar-toggle-row">
+            <button class="secondary-action mini-action sidebar-collapse-toggle" id="sidebar-collapse-toggle" type="button" aria-expanded="true" aria-controls="planner-form">Collapse sidebar</button>
+          </div>
+          <div class="sidebar-rail" id="sidebar-rail" aria-label="Collapsed sidebar navigation">
+            <button class="sidebar-rail-toggle" id="sidebar-expand-toggle" type="button" aria-label="Expand sidebar">›</button>
+            <button class="sidebar-rail-item" type="button" data-sidebar-rail="setup">
+              <span aria-hidden="true">S</span>
+              <strong>Setup</strong>
+            </button>
+            <button class="sidebar-rail-item" type="button" data-sidebar-rail="focus">
+              <span aria-hidden="true">F</span>
+              <strong>Focus</strong>
+            </button>
+            <button class="sidebar-rail-item" type="button" data-sidebar-rail="roadmap">
+              <span aria-hidden="true">R</span>
+              <strong>Roadmap</strong>
+            </button>
+            <button class="sidebar-rail-item" type="button" data-sidebar-rail="review">
+              <span aria-hidden="true">N</span>
+              <strong>Review</strong>
+              <em id="sidebar-review-count" hidden>0</em>
+            </button>
+          </div>
+          <div class="setup-summary" id="setup-summary" hidden>
+            <div>
+              <p class="eyebrow">Setup</p>
+              <strong id="setup-summary-title">Python / Intermediate</strong>
+              <span id="setup-summary-meta">AI and data analysis / 6 hrs/week</span>
+            </div>
+            <button class="secondary-action mini-action" id="edit-setup" type="button">Edit setup</button>
+          </div>
+          <section class="task-progress-rail" id="task-progress-rail" aria-label="Current task progress">
+            <div class="today-focus-card" hidden>
+              <p class="eyebrow">Today's focus</p>
+              <p id="today-focus-copy">A small coding task with one clear output.</p>
+            </div>
+            <div class="step-tracker">
+              <p class="eyebrow">Roadmap</p>
+              <p class="roadmap-name" id="roadmap-name">Python Intermediate → AI/Data</p>
+              <p class="roadmap-label">Current skill</p>
+              <p class="skill-track" id="skill-track">Skill track: Getting started</p>
+              <div class="level-progress" aria-label="Solved without help">
+                <div class="level-progress-header">
+                  <span>Goal</span>
+                  <strong id="level-progress-text">0 / 2 solved without help</strong>
+                </div>
+                <div class="level-progress-bar">
+                  <span id="level-progress-fill"></span>
+                </div>
+              </div>
+              <p class="mastery-track" id="mastery-track"></p>
+              <button class="task-status-pill" id="task-status-pill" type="button">Current task: Not started</button>
+              <div class="roadmap-compact" id="roadmap-compact">
+                <p class="roadmap-label">Up next</p>
+                <p class="roadmap-module" id="roadmap-module">Generate a task</p>
+                <p class="roadmap-unlock" id="roadmap-next-unlock">Next unlock: Complete this task.</p>
+                <button class="secondary-action mini-action roadmap-view-action" id="view-roadmap" type="button">View roadmap</button>
+              </div>
+            </div>
+            <div class="needs-review-card" id="needs-review-card" hidden>
+              <p class="eyebrow">Needs review</p>
+              <p class="needs-review-count-copy" id="needs-review-count-copy"><span id="needs-review-count">0</span> task waiting</p>
+              <div class="needs-review-actions">
+                <button class="needs-review-summary" id="needs-review-resume" type="button">Resume</button>
+                <button class="secondary-action mini-action" id="needs-review-manage" type="button">Manage</button>
+              </div>
+              <div class="needs-review-list" id="needs-review-list"></div>
+            </div>
+          </section>
+          <div class="setup-header">
+            <div class="setup-title-row">
+              <div>
+                <p class="eyebrow">Personalize</p>
+                <h2>Task setup</h2>
+              </div>
+              <button class="secondary-action mini-action setup-collapse-action" id="collapse-setup" type="button" hidden>Hide setup</button>
+            </div>
+            <p>Adjust this when the mentor needs different context.</p>
+          </div>
+
+          <div class="field">
+            <label for="language">Language or tool</label>
+            <select id="language" name="language">
+              <option value="Python" selected>Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="TypeScript">TypeScript</option>
+              <option value="HTML and CSS">HTML and CSS</option>
+              <option value="Java">Java</option>
+              <option value="C#">C#</option>
+              <option value="C++">C++</option>
+              <option value="SQL">SQL</option>
+              <option value="R">R</option>
+              <option value="Go">Go</option>
+              <option value="Rust">Rust</option>
+              <option value="Swift">Swift</option>
+              <option value="Kotlin">Kotlin</option>
+              <option value="React">React</option>
+              <option value="Node.js">Node.js</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="field custom-field" id="language-custom-field">
+            <label for="custom-language">Name the language or tool</label>
+            <input id="custom-language" name="customLanguage" type="text" placeholder="Example: MATLAB, Unity, Django">
+          </div>
+
+          <fieldset class="field">
+            <legend>Starting point</legend>
+            <div class="segmented" role="radiogroup" aria-label="Starting point">
+              <label><input type="radio" name="level" value="beginner"><span>Beginner</span></label>
+              <label><input type="radio" name="level" value="intermediate" checked><span>Intermediate</span></label>
+              <label><input type="radio" name="level" value="advanced"><span>Advanced</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="ambition">Profession or goal</label>
+            <select id="ambition" name="ambition">
+              <option value="ai">AI and data analysis</option>
+              <option value="web">Web and app development</option>
+              <option value="cybersecurity">Cybersecurity</option>
+              <option value="automation">Business automation</option>
+              <option value="games">Games and interactive media</option>
+              <option value="custom">Something specific</option>
+            </select>
+          </div>
+
+          <div class="field custom-field" id="ambition-custom-field">
+            <label for="custom-ambition">Describe your goal</label>
+            <input id="custom-ambition" name="customAmbition" type="text" placeholder="Example: robotics, finance, healthcare">
+          </div>
+
+          <div class="field">
+            <label for="task">Current task or project</label>
+            <textarea id="task" name="task" rows="4">Build a data dashboard and explain the results to a non-technical team.</textarea>
+          </div>
+
+          <div class="field range-field">
+            <label for="hours">Hours per week <output id="hours-output" for="hours">6</output></label>
+            <input id="hours" name="hours" type="range" min="2" max="20" step="1" value="6">
+          </div>
+
+          <button class="primary-action" id="generate-button" type="submit">
+            <span class="button-icon" aria-hidden="true">+</span>
+            <span>Update Current Task</span>
+          </button>
+
+          <section class="active-plans is-hidden" aria-labelledby="active-plans-title">
+            <div class="active-plans-header">
+              <div>
+                <p class="eyebrow">Saved roadmaps</p>
+                <h2 id="active-plans-title">Active plans</h2>
+              </div>
+              <span class="plan-count" id="plan-count">0</span>
+            </div>
+            <div class="active-plan-list" id="active-plan-list"></div>
+          </section>
+        </form>
+
+        <section class="plan-board" aria-live="polite">
+          <div class="plan-header">
+            <div>
+              <p class="eyebrow">Mentor focus</p>
+              <h2 id="plan-title">Today's Task</h2>
+              <p class="plan-subtitle" id="plan-subtitle">A single next step based on your language, level, and goal.</p>
+            </div>
+            <div class="pace-chip" id="pace-chip">6 hrs/week</div>
+          </div>
+
+          <div class="insight-strip" id="insight-strip"></div>
+          <button class="review-reminder" id="review-reminder" type="button" hidden>! You have unfinished tasks - Resume</button>
+
+          <section class="current-task-view" aria-labelledby="plan-title">
+            <div class="module-list" id="module-list"></div>
+            <section class="task-tools" id="task-tools-panel" aria-labelledby="task-tools-heading" aria-hidden="true" inert>
+              <div class="task-tools-header">
+                <div>
+                  <p class="eyebrow">Learning tools</p>
+                  <h3 id="task-tools-heading">Use these when you get stuck</h3>
+                </div>
+                <button class="secondary-action mini-action help-close" id="close-help-panel" type="button">Close</button>
+              </div>
+              <div class="task-tool-actions">
+                <button class="secondary-action" type="button" data-tool="nudge">Nudge</button>
+                <button class="secondary-action" type="button" data-tool="guided">Hint</button>
+                <button class="secondary-action" type="button" data-tool="walkthrough">Show solution</button>
+              </div>
+              <div class="task-tool-response" id="task-tool-response" aria-live="polite">
+                <p>Choose a tool to get help that stays tied to today's task.</p>
+              </div>
+              <div class="ask-mentor-tool">
+                <label for="task-mentor-question">Ask the mentor about this task</label>
+                <div class="ask-mentor-row">
+                  <input id="task-mentor-question" type="text" placeholder="Example: why do I need a dictionary here?">
+                  <button class="secondary-action" id="ask-task-mentor" type="button">Ask</button>
+                </div>
+                <div class="task-mentor-response" id="task-mentor-response" aria-live="polite"></div>
+              </div>
+            </section>
+            <div class="start-submit-row" id="start-submit-row">
+              <button class="primary-action" id="start-submit" type="button">
+                <span class="button-icon" aria-hidden="true">+</span>
+                <span>Start Task</span>
+              </button>
+            </div>
+            <div class="mentor-workspace">
+              <section class="submission-panel" id="submission-panel" hidden>
+                <h3>Submit your attempt</h3>
+                <div class="submission-toolbar" aria-label="Submission mode">
+                  <div class="editor-mode-toggle" role="radiogroup" aria-label="Submission input mode">
+                    <label>
+                      <input type="radio" name="editor-mode" value="text" checked>
+                      <span>Text</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="editor-mode" value="code">
+                      <span>Editor</span>
+                    </label>
+                  </div>
+                </div>
+                <label class="submission-label" for="task-attempt">Code, notes, or explanation</label>
+                <div class="attempt-editor" id="attempt-editor">
+                  <div class="editor-topbar">
+                    <span class="editor-language" id="editor-language">Python</span>
+                    <div class="editor-action-row">
+                      <button class="secondary-action mini-action editor-run-action" id="run-code" type="button" hidden>Run Code</button>
+                      <button class="secondary-action mini-action editor-format-action" id="format-code" type="button" hidden>Format</button>
+                    </div>
+                  </div>
+                  <pre class="editor-line-numbers" id="editor-line-numbers" aria-hidden="true">1</pre>
+                  <textarea id="task-attempt" rows="8" spellcheck="false" placeholder="Paste code, write pseudocode, or explain your approach here."></textarea>
+                </div>
+                <section class="code-output-panel" id="code-output-panel" aria-live="polite" hidden>
+                  <div class="code-output-header">
+                    <h4>Console Output</h4>
+                    <span id="code-output-status">Ready</span>
+                  </div>
+                  <pre id="code-output">Run code to see output here.</pre>
+                </section>
+                <button class="secondary-action help-open" id="open-help-panel" type="button" aria-controls="task-tools-panel" aria-expanded="false">Need help?</button>
+                <button class="secondary-action" id="submit-attempt" type="button">Submit Attempt</button>
+                <p class="submission-status" id="submission-status" aria-live="polite">No attempt submitted yet.</p>
+              </section>
+              <section class="feedback-panel" id="mentor-feedback" aria-live="polite" hidden>
+                <h3>Feedback will appear here</h3>
+                <p>This space is reserved for guidance after the user submits their attempt.</p>
+              </section>
+            </div>
+            <section class="next-step-panel" id="next-step-panel" hidden>
+              <div>
+                <p class="eyebrow">Choose your next step</p>
+                <h3 id="next-step-title">Keep building this skill</h3>
+                <p id="next-step-copy">Use the mentor feedback to make one focused improvement, then submit the updated attempt.</p>
+              </div>
+              <div class="next-step-options" aria-label="Choose your next learning step">
+                <div class="next-step-group">
+                  <p>Continue coding</p>
+                  <button class="next-step-option" type="button" data-next-step="improve">
+                    <strong>Improve your solution</strong>
+                    <span>Retry with the feedback in mind.</span>
+                  </button>
+                  <button class="next-step-option" type="button" data-next-step="extend">
+                    <strong>Extend your solution</strong>
+                    <span>Add one concrete requirement.</span>
+                  </button>
+                </div>
+                <div class="next-step-group understand-group">
+                  <p>Understand better</p>
+                  <button class="next-step-option" type="button" data-next-step="understand">
+                    <strong>Learn why this works</strong>
+                    <span>Study the pattern before coding more.</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <div class="legacy-panels" hidden>
+          <div class="tab-panel" id="roadmap" role="tabpanel"></div>
+
+          <div class="tab-panel" id="profession" role="tabpanel">
+            <div class="relevance-card" id="relevance-card"></div>
+          </div>
+
+          <div class="tab-panel" id="practice" role="tabpanel">
+            <div class="practice-grid" id="practice-grid"></div>
+          </div>
+
+          <div class="tab-panel" id="study-tools" role="tabpanel">
+            <div class="study-tools-grid">
+              <section class="tool-panel">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Recall</p>
+                  <h3>Flashcards</h3>
+                </div>
+                <div class="flashcard-list" id="flashcard-list"></div>
+              </section>
+
+              <section class="tool-panel quiz-panel">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Check</p>
+                  <h3>Quick quiz</h3>
+                </div>
+                <button class="secondary-action" id="start-quiz" type="button">Start quiz</button>
+                <div class="quiz-list" id="quiz-list"></div>
+                <button class="secondary-action" id="check-quiz" type="button">Check quiz</button>
+                <div class="quiz-result" id="quiz-result" aria-live="polite"></div>
+              </section>
+
+              <section class="tool-panel">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Language</p>
+                  <h3>Glossary</h3>
+                </div>
+                <div class="glossary-list" id="glossary-list"></div>
+              </section>
+
+              <section class="tool-panel">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Build</p>
+                  <h3>Mini project builder</h3>
+                </div>
+                <div class="builder-list" id="builder-list"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="interview" role="tabpanel">
+            <div class="interview-panel">
+              <div class="interview-list" id="interview-list"></div>
+              <button class="secondary-action" id="grade-interview" type="button">Grade full interview</button>
+              <div class="interview-result" id="interview-result" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="help" role="tabpanel">
+            <div class="help-panel">
+              <section class="help-card">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Quick help</p>
+                  <h3>What are you stuck on?</h3>
+                </div>
+                <div class="help-actions" id="help-actions"></div>
+              </section>
+
+              <section class="help-card">
+                <div class="tool-panel-header">
+                  <p class="eyebrow">Ask</p>
+                  <h3>Specific question</h3>
+                </div>
+                <textarea id="help-question" rows="5" placeholder="Example: I do not understand when to use functions in this dashboard project."></textarea>
+                <button class="secondary-action" id="ask-help" type="button">Get guidance</button>
+              </section>
+
+              <section class="help-response" id="help-response" aria-live="polite"></section>
+            </div>
+          </div>
+          </div>
+        </section>
+      </section>
+
+      <button class="notes-toggle is-hidden" id="notes-toggle" type="button" aria-expanded="true" aria-controls="notes-panel">Hide notes</button>
+
+      <section class="workspace is-hidden" aria-label="Learning workspace">
+        <aside class="notes-panel" id="notes-panel">
+          <div class="notes-header">
+            <div>
+              <p class="eyebrow">Notes</p>
+              <h2>Learning notes</h2>
+            </div>
+            <span class="plan-count" id="note-count">0</span>
+          </div>
+
+          <div class="field">
+            <label for="note-title">Note title</label>
+            <input id="note-title" type="text" placeholder="Example: For loops in Python">
+          </div>
+
+          <textarea id="notes" rows="7" placeholder="Write what clicked, where you got stuck, and how this applies to your next project."></textarea>
+
+          <div class="notes-actions">
+            <button class="primary-action compact-action" id="save-note" type="button">
+              <span class="button-icon" aria-hidden="true">+</span>
+              <span>Save note</span>
+            </button>
+            <button class="secondary-action" id="clear-note" type="button">Clear draft</button>
+          </div>
+
+          <div class="saved-notes" id="saved-notes"></div>
+        </aside>
+
+        <article class="progress-panel">
+          <div>
+            <p class="eyebrow">Progress</p>
+            <h2>Learning activity</h2>
+          </div>
+          <div class="progress-meter" aria-label="Overall progress">
+            <div class="progress-meter-fill" id="progress-meter-fill"></div>
+          </div>
+          <p class="progress-summary" id="progress-summary">Start a plan to begin tracking progress.</p>
+          <div class="progress-stats" id="progress-stats"></div>
+          <div class="progress-events" id="progress-events"></div>
+        </article>
+      </section>
+    </main>
+
+    <section class="roadmap-modal" id="roadmap-modal" hidden aria-label="Learning roadmap">
+      <div class="roadmap-modal-backdrop" data-close-roadmap></div>
+      <article class="roadmap-modal-card" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title">
+        <div class="roadmap-modal-header">
+          <div>
+            <p class="eyebrow">Roadmap</p>
+            <h2 id="roadmap-modal-title">Learning path</h2>
+            <p id="roadmap-modal-summary">Your path will appear after you generate a task.</p>
+          </div>
+          <button class="secondary-action mini-action" id="close-roadmap" type="button">Close</button>
+        </div>
+        <div class="roadmap-level-complete" id="roadmap-level-complete" hidden></div>
+        <div class="roadmap-list" id="roadmap-list"></div>
+      </article>
+    </section>
+
+    <section class="needs-review-modal" id="needs-review-modal" hidden aria-label="Needs review tasks">
+      <div class="needs-review-modal-backdrop" data-close-needs-review></div>
+      <article class="needs-review-modal-card" role="dialog" aria-modal="true" aria-labelledby="needs-review-modal-title">
+        <div class="needs-review-modal-header">
+          <div>
+            <p class="eyebrow">Needs review</p>
+            <h2 id="needs-review-modal-title">Needs review tasks</h2>
+            <p>Resume unfinished work or remove tasks you no longer want to revisit.</p>
+          </div>
+          <button class="secondary-action mini-action" id="close-needs-review" type="button">Close</button>
+        </div>
+        <div class="needs-review-manager-list" id="needs-review-manager-list"></div>
+      </article>
+    </section>
+
+    <script src="app.js?v=20260512-sidebar-collapse"></script>
+  </body>
+</html>
